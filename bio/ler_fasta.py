@@ -1,5 +1,4 @@
-from bio.organismo_fasta import OrganismoFasta
-
+from .organismo_fasta import OrganismoFasta
 
 def ler_fasta(caminho_do_arquivo):
     organismos = []
