@@ -1,7 +1,8 @@
-from .constantes import DNA_PARA_AMINOACIDO
+from bio.constantes import DNA_PARA_AMINOACIDO
+from bio.constantes import DNA_STOP_CODONS
 
 class Sequencia:
-    COMPLEMENTO = str.maketrans('ATCG', 'TAGC')
+    COMPLEMENTO = str.maketrans('ATCG', 'TAGC') #cria uma tabela de traducao de forma ++ simples
 
     def __init__(self, sequencia):
         self.sequencia = sequencia.upper()
@@ -25,29 +26,37 @@ class Sequencia:
         return self.sequencia[index]
 
     def complementar(self):
-        return Sequencia(self.sequencia.translate(self.COMPLEMENTO))
+        return Sequencia(self.sequencia.translate(self.COMPLEMENTO)) #traduz todos os caracteres da string
 
     def complementar_reversa(self):
-        return Sequencia(self.sequencia.translate(self.COMPLEMENTO)[::-1])
+        return Sequencia(self.sequencia.translate(self.COMPLEMENTO)[::-1]) #pego todos os caracteres da string e inverte
 
     def transcrever(self):
-        return Sequencia(self.sequencia.replace('T', 'U'))
+        return Sequencia(self.sequencia.replace('T', 'U')) #substitui T por U
 
-    def traduzir(self, parar=False):
-        proteina = []
+    def traduzir(self, parar):
+        proteina = ""
         for i in range(0, len(self.sequencia), 3):
             codon = self.sequencia[i:i+3]
-            if len(codon) < 3:
-                break  
-            aminoacido = DNA_PARA_AMINOACIDO.get(codon, 'X') 
-            if parar and aminoacido == '*':
-                break  
-            proteina.append(aminoacido)
-        return ''.join(proteina)
+
+            if codon in DNA_STOP_CODONS:
+                # veriica o parametro parar
+                if parar == True:
+                    return proteina
+                #se nao for..
+                elif parar == False:
+                    proteina += "*" #add 
+
+            else: #se n for stop codon.. 
+                if codon in DNA_PARA_AMINOACIDO:
+                    proteina += DNA_PARA_AMINOACIDO[codon] #tradução de fato 
+                else: #se nao tiver dentro de dna para aminoacido 
+                    proteina += "X"   #add X         
+        return proteina
 
     def calcular_percentual(self, bases):
         total_bases = len(self.sequencia)
         if total_bases == 0:
-            return 0.0  
+            return 0.0  # Retorna 0.0 se a sequência estiver vazia
         count = sum(self.sequencia.count(base) for base in bases)
-        return count / total_bases
+        return count / total_bases  # Retorna a proporção de bases específicas

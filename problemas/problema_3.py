@@ -14,8 +14,3 @@ def identificar_mutacao(caminho_arquivo_fasta, posicao, nucleotideo_original, nu
     for organismo, status in mutacoes.items():
         print(f"Organismo: {organismo}, Mutação: {status}")
 
-caminho_arquivo_fasta = ("arquivos/Flaviviridae-genomes.fasta")
-posicao_mutacao = 999 
-nucleotideo_original = "A"
-nucleotideo_mutado = "G"
-identificar_mutacao(caminho_arquivo_fasta, posicao_mutacao, nucleotideo_original, nucleotideo_mutado)
